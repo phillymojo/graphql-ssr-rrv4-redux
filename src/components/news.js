@@ -1,13 +1,15 @@
 import React from "react"
-import { connect } from "react-redux"
-import { Link } from 'react-router-dom';
+import { connect } from "react-redux";
+import Header from './header';
  
 class News extends React.Component {
 
   render() {
     return (
       <div>
-        News<br />
+        <Header />
+        <br />
+        { (this.props.isLoading) ? <div>Loading...</div> : 
         <ul>
           {
             this.props.newsItems.map((newsItem, i) => {
@@ -22,7 +24,7 @@ class News extends React.Component {
             })
           }
           </ul>
-        <Link to={`/some-other-path`}>More</Link>
+        }
       </div>
     )
   }

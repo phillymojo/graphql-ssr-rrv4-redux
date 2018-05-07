@@ -9,9 +9,9 @@ import { StaticRouter, Route, Switch } from "react-router"
 import configureStore from './configureStore';
 import { renderRoutes, matchRoutes } from 'react-router-config';
 import graphqlHTTP from 'express-graphql';
-import { buildSchema } from 'graphql';
 import { routes } from './routes';
 import axios from 'axios';
+import schema from './schema';
 
 
 const app = express()
@@ -19,32 +19,7 @@ const server = http.createServer(app)
 
 app.use(express.static(path.join(__dirname, 'static')));
 
-const schema = buildSchema(`
-  type Query {
-    hello: String!,
-    xkcd: XKCD!
-    news: [newsItem!]!
-  }
-  type XKCD {
-    img: String!,
-    num: Int!,
-    title: String!,
-    alt: String!
-  },
-  type newsItem {
-    author: String,
-    title: String,
-    description: String,
-    url: String,
-    urlToImage: String,
-    publishedAt: String
-  }
-`);
-
 const root = {
-  hello: () => {
-    return 'Hello world';
-  },
   xkcd: () => {
     const num = Math.floor(Math.random() * 1988) + 1;
     return axios.get(`https://xkcd.com/${num}/info.0.json`)
@@ -61,6 +36,34 @@ const root = {
         return res.data.articles
       })
   },
+  pw: () => {
+    // call url analyzer and feeds rollup, return both results in single call
+
+    return axios.post("https://api.nike.com/user_navigation/url_analysis/v1", {
+      "url": "http://nike.com/us/en_us/n/1j7?sl=Nike%20sweatsuit"
+    }).then((res) => {
+      //  console.log(res.data)
+      return res.data
+    })
+
+    // let promises = [];
+
+    // promises.push(axios.post("https://api.nike.com/user_navigation/url_analysis/v1", {
+    //   "url": "http://nike.com/us/en_us/n/1j7?sl=Nike%20sweatsuit"
+    // }).then((res) => {
+    //   //  console.log(res.data)
+    //   return res.data
+    // })
+    // )
+
+    // // return {};
+
+    // Promise.all(promises).then((values) => {
+    //   console.log('server',values);
+
+    //   return values[0].data
+    // })
+  }
 
 };
 

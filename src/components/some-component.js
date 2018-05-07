@@ -1,18 +1,18 @@
 import React from "react"
 import { connect } from "react-redux"
-import { Link } from 'react-router-dom';
- 
+import Header from './header';
+
 class SomeComponent extends React.Component {
 
   render() {
     return (
       <div>
-        Some Component<br />
+        <Header />
+        <br />
         {this.props.isLoading ? 
           <span>Loading...</span> :
           <span>{this.props.chuckNorrisQuote}</span>
         }
-        <Link to={`/some-other-path`}>More</Link>
       </div>
     )
   }

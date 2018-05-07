@@ -15,6 +15,7 @@ window.onload = () => {
     <Provider store={store}>
       <BrowserRouter>
         <RouteDataLoader routes={routes} dispatch={store.dispatch}>
+        {console.log(store.getState())}
           { renderRoutes(routes) }
         </RouteDataLoader>
       </BrowserRouter>

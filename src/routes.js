@@ -1,7 +1,8 @@
 import { SomeComponentConnected } from "./components/some-component"
 import { SomeOtherComponentConnected } from "./components/some-other-component"
 import { NewsConnected } from "./components/news";
-import { getChuckNorrisQuote, getLatestXKCDComic, getNews } from "./actions"
+import { PWConnected } from "./components/pw";
+import { getChuckNorrisQuote, getLatestXKCDComic, getNews, getPW } from "./actions"
 
 export const routes = [
   {
@@ -18,5 +19,10 @@ export const routes = [
     path: "/news",
     component: NewsConnected,
     loadData: () => getNews()
+  },
+  {
+    path: "/pw",
+    component: PWConnected,
+    loadData: () => getPW()
   }
 ]

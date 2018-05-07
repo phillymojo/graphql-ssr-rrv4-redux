@@ -1,13 +1,14 @@
 import React from "react"
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import Header from './header';
  
 export class SomeOtherComponent extends React.Component {
 
   render() {
     return (
       <div>
-        Some Other Component<br />
+        <Header />
+        <br />
         {!this.props.isLoading ?
         <div>
           <div>{this.props.xkcd.title}(#{this.props.xkcd.num})</div>
@@ -15,7 +16,6 @@ export class SomeOtherComponent extends React.Component {
         </div> :
         <div>Loading...</div>
         }
-        <Link to={`/some-path`}>More</Link>
       </div>
     )
   }

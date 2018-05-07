@@ -23,6 +23,13 @@ export function getNewsSuccess(data) {
   }
 }
 
+export function getPWSuccess(data) {
+  return {
+    type: 'PW_FETCH_SUCCESS',
+    data
+  }
+}
+
 export function setIsLoading(isLoading) {
   return {
     type: 'IS_LOADING',
@@ -58,10 +65,23 @@ export function getLatestXKCDComic() {
 
 export function getNews() {
   return dispatch => {
+    dispatch(setIsLoading(true))
     return axios.post(queryUrl, {
       query: '{ news { author,title,description,url,urlToImage,publishedAt } }'
     }).then((response) => {
       dispatch(getNewsSuccess(response.data));
+      dispatch(setIsLoading(false));
+    })
+  }
+}
+
+export function getPW() {
+  return dispatch => {
+    return axios.post(queryUrl, {
+      query: '{ pw { action {statusCode,redirectUrl},source{url,analysis{countryCode}},resourceType,resourceVersion } }'
+    }).then((response) => {
+      // console.log(response.data.data.pw)
+      dispatch(getPWSuccess(response.data));
     })
   }
 }
