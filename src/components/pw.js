@@ -11,7 +11,7 @@ class PW extends React.Component {
         <Header />
         <br />
         { (this.props.isLoading) ? <div>Loading...</div> : 
-        <div>The request for {pw.source.url} should redirect to {pw.action.redirectUrl}</div>
+        <div>The request for {pw.url} should redirect to {pw.redirectUrl}</div>
         }
       </div>
     )

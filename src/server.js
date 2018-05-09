@@ -39,32 +39,42 @@ const root = {
   pw: () => {
     // call url analyzer and feeds rollup, return both results in single call
 
+
     return axios.post("https://api.nike.com/user_navigation/url_analysis/v1", {
       "url": "http://nike.com/us/en_us/n/1j7?sl=Nike%20sweatsuit"
-    }).then((res) => {
-      //  console.log(res.data)
-      return res.data
     })
-
-    // let promises = [];
-
-    // promises.push(axios.post("https://api.nike.com/user_navigation/url_analysis/v1", {
-    //   "url": "http://nike.com/us/en_us/n/1j7?sl=Nike%20sweatsuit"
-    // }).then((res) => {
-    //   //  console.log(res.data)
-    //   return res.data
-    // })
-    // )
-
-    // // return {};
-
-    // Promise.all(promises).then((values) => {
-    //   console.log('server',values);
-
-    //   return values[0].data
-    // })
+      .then((res) => {
+        if (res.data.action && res.data.action.redirectUrl) {
+          //a redirect was detected
+          return {
+            analyzer: {
+              url: res.data.source.url,
+              redirectUrl: res.data.action.redirectUrl,
+              pageType: res.data.source.analysis.pageType,
+              countryCode: res.data.source.analysis.countryCode,
+              languageTag: res.data.source.analysis.languageTag
+            }
+          }
+        } else {
+          //no redirect
+          /** TODO: return an object that has the UUID info */
+        }
+      })
+      .then((ua_res) => {
+        return axios.get("https://api.nike.com/product_feed/rollup_threads/v2/?consumerChannelId=d9a5bc42-4b9c-4976-858a-f159cf99c647&filter=channelId(d9a5bc42-4b9c-4976-858a-f159cf99c647)&filter=marketplace(US)&filter=language(en)&filter=employeePrice(true)&count=60&searchTerms=red&anchor=60")
+          .then((pw_res) => {
+            const newobj = Object.assign({}, ua_res, {products: pw_res.data.objects});
+            console.log(newobj);
+            return newobj;
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
-
 };
 
 app.use('/graphql', graphqlHTTP({

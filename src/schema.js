@@ -4,7 +4,7 @@ const schema = buildSchema(`
   type Query {
     xkcd: XKCD!,
     news: [newsItem!]!,
-    pw: URLAnalyzer
+    pw: PW
   }
   type XKCD {
     img: String!,
@@ -21,32 +21,23 @@ const schema = buildSchema(`
     publishedAt: String
   },
   type PW {
-    products: [product!]!,
-    nav: [navlink!]!
-  },
-  type URLAnalyzer {
-    source: URLAnalyzer_source,
-    action: URLAnalyzer_action,
-    resourceType: String,
-    resourceVersion: String
-  },
-  type URLAnalyzer_source {
-    url: String,
-    analysis: URLAnalyzer_source_analysis
+    urlanalyzer: URLAnalyzer,
+    products: [product!],
+    nav: Nav,
   }
-  type URLAnalyzer_source_analysis {
+  type URLAnalyzer {
+    url: String,
+    redirectUrl: String,
     pageType: String,
     countryCode: String,
-    languageTag: String,
-    query: String
-  }
-  type URLAnalyzer_action {
-    statusCode: Int,
-    redirectUrl: String
-  }
+    languageTag: String
+  },
   type product {
     id: Int!,
     title: String!
+  },
+  type Nav {
+    navlinks: [navlink!]
   },
   type navlink {
     id: Int!,

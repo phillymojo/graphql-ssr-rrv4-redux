@@ -77,11 +77,26 @@ export function getNews() {
 
 export function getPW() {
   return dispatch => {
+    dispatch(setIsLoading(true))
     return axios.post(queryUrl, {
-      query: '{ pw { action {statusCode,redirectUrl},source{url,analysis{countryCode}},resourceType,resourceVersion } }'
+      query: `{ 
+        pw {
+          analyzer {
+            url,
+            redirectUrl,
+            pageType,
+            countryCode,
+            languageTag
+          }
+        }
+      }
+      `
     }).then((response) => {
-      // console.log(response.data.data.pw)
       dispatch(getPWSuccess(response.data));
+      dispatch(setIsLoading(false))
+    })
+    .catch((err) => {
+      console.log(err.response)
     })
   }
 }

@@ -36,10 +36,9 @@ export function newsItems(state={ data: { news: [] } }, action) {
   }
 }
 
-export function PW(state={ data: { pw: {} } }, action) {
+export function PW(state={ data: { pw: { source: {}, action: {}} } }, action) {
   switch(action.type) {
     case 'PW_FETCH_SUCCESS':
-    console.log(action.data.data);
       return action.data;
     default:
       return state;
