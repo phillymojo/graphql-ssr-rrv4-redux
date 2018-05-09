@@ -5,13 +5,22 @@ import Header from './header';
 class PW extends React.Component {
 
   render() {
-    const pw = this.props.pw;
+    const analyzer = this.props.pw.analyzer;
     return (
       <div>
         <Header />
         <br />
         { (this.props.isLoading) ? <div>Loading...</div> : 
-        <div>The request for {pw.url} should redirect to {pw.redirectUrl}</div>
+        <div>
+          <div>The request for {analyzer.url} should redirect to {analyzer.redirectUrl}</div>
+          <ul>
+            {
+              this.props.pw.products.map((product, i) => {
+                return <li key={i}>{product.title}</li>
+              })
+            }
+          </ul>
+        </div>
         }
       </div>
     )

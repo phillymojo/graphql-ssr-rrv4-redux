@@ -63,8 +63,13 @@ const root = {
       .then((ua_res) => {
         return axios.get("https://api.nike.com/product_feed/rollup_threads/v2/?consumerChannelId=d9a5bc42-4b9c-4976-858a-f159cf99c647&filter=channelId(d9a5bc42-4b9c-4976-858a-f159cf99c647)&filter=marketplace(US)&filter=language(en)&filter=employeePrice(true)&count=60&searchTerms=red&anchor=60")
           .then((pw_res) => {
-            const newobj = Object.assign({}, ua_res, {products: pw_res.data.objects});
-            console.log(newobj);
+            const products = pw_res.data.objects.map((product) => {
+              return {
+                id: product.id,
+                title: product.publishedContent.properties.title
+              }
+            });
+            const newobj = Object.assign({}, ua_res, {products});
             return newobj;
           })
           .catch((err) => {

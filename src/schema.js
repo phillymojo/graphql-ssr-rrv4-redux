@@ -21,9 +21,8 @@ const schema = buildSchema(`
     publishedAt: String
   },
   type PW {
-    urlanalyzer: URLAnalyzer,
+    analyzer: URLAnalyzer,
     products: [product!],
-    nav: Nav,
   }
   type URLAnalyzer {
     url: String,
@@ -33,7 +32,7 @@ const schema = buildSchema(`
     languageTag: String
   },
   type product {
-    id: Int!,
+    id: String!,
     title: String!
   },
   type Nav {

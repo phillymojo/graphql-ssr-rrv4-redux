@@ -88,6 +88,10 @@ export function getPW() {
             countryCode,
             languageTag
           }
+          products {
+            id,
+            title
+          }
         }
       }
       `
@@ -96,7 +100,7 @@ export function getPW() {
       dispatch(setIsLoading(false))
     })
     .catch((err) => {
-      console.log(err.response)
+      console.log(err.response.data)
     })
   }
 }
