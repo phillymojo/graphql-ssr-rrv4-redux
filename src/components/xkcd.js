@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from 'react-redux';
 import Header from './header';
  
-export class SomeOtherComponent extends React.Component {
+export class XKCD extends React.Component {
 
   render() {
     return (
@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
   }
  }
   
- export const SomeOtherComponentConnected = connect(
+ export const XKCDConnected = connect(
    mapStateToProps
- )(SomeOtherComponent)
+ )(XKCD)
 

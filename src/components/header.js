@@ -6,8 +6,8 @@ class Header extends React.Component {
   render() {
     return (
       <div>
-      <Link to={`/some-path`}>Chuck</Link>&nbsp;
-      <Link to={`/some-other-path`}>XKCD</Link>&nbsp;
+      <Link to={`/chuck`}>Chuck</Link>&nbsp;
+      <Link to={`/xkcd`}>XKCD</Link>&nbsp;
       <Link to={`/news`}>News</Link>&nbsp;
       <Link to={`/pw`}>PW</Link>
       </div>

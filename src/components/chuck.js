@@ -2,7 +2,7 @@ import React from "react"
 import { connect } from "react-redux"
 import Header from './header';
 
-class SomeComponent extends React.Component {
+class Chuck extends React.Component {
 
   render() {
     return (
@@ -25,6 +25,6 @@ const mapStateToProps = (state) => {
  }
 }
  
-export const SomeComponentConnected = connect(
+export const ChuckConnected = connect(
   mapStateToProps
-)(SomeComponent)
+)(Chuck)

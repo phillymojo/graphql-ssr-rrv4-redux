@@ -2,14 +2,24 @@ import axios from 'axios';
 
 const queryUrl = 'http://localhost:3003/graphql';
 
-export function getChuckNorrisQuoteSuccess(quote) {
+/** General actions */
+export function setIsLoading(isLoading) {
   return {
-    type: 'QUOTE_FETCH_SUCCESS',
+    type: 'IS_LOADING',
+    isLoading
+  }
+}
+
+
+/** Success actions */
+export function getChuckSuccess(quote) {
+  return {
+    type: 'CHUCK_FETCH_SUCCESS',
     quote
   }
 }
 
-export function getLatestXKCDComicSuccess(data) {
+export function getXKCDSuccess(data) {
   return {
     type: 'XKCD_FETCH_SUCCESS',
     data
@@ -30,14 +40,9 @@ export function getPWSuccess(data) {
   }
 }
 
-export function setIsLoading(isLoading) {
-  return {
-    type: 'IS_LOADING',
-    isLoading
-  }
-}
 
-export function getChuckNorrisQuote() {
+/** Get actions */
+export function getChuck() {
   return dispatch => {
     dispatch(setIsLoading(true));
     return axios.get('http://api.icndb.com/jokes/random')
@@ -45,19 +50,19 @@ export function getChuckNorrisQuote() {
         return response.data.value.joke;
       })
       .then((quote) => {
-        dispatch(getChuckNorrisQuoteSuccess(quote));
+        dispatch(getChuckSuccess(quote));
         dispatch(setIsLoading(false));
       })
   }
 }
 
-export function getLatestXKCDComic() {
+export function getXKCD() {
   return dispatch => {
     dispatch(setIsLoading(true))
     return axios.post(queryUrl, {
       query: '{ xkcd {img,num,title,alt}}'
     }).then((response) => {
-      dispatch(getLatestXKCDComicSuccess(response.data));
+      dispatch(getXKCDSuccess(response.data));
       dispatch(setIsLoading(false));
     });
   }
@@ -91,6 +96,10 @@ export function getPW() {
           products {
             id,
             title
+          }
+          navlinks {
+            id,
+            displayText
           }
         }
       }

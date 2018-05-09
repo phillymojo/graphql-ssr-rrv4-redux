@@ -23,6 +23,7 @@ const schema = buildSchema(`
   type PW {
     analyzer: URLAnalyzer,
     products: [product!],
+    navlinks: [navlink!],
   }
   type URLAnalyzer {
     url: String,
@@ -35,12 +36,9 @@ const schema = buildSchema(`
     id: String!,
     title: String!
   },
-  type Nav {
-    navlinks: [navlink!]
-  },
   type navlink {
-    id: Int!,
-    url: String!,
+    id: String!,
+    displayText: String,
   }
 `);
 

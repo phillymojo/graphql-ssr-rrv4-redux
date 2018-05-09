@@ -15,6 +15,13 @@ class PW extends React.Component {
           <div>The request for {analyzer.url} should redirect to {analyzer.redirectUrl}</div>
           <ul>
             {
+              this.props.pw.navlinks.map((navlink, i) => {
+                return <li key={i}>{navlink.displayText}</li>
+              })
+            }
+          </ul>
+          <ul>
+            {
               this.props.pw.products.map((product, i) => {
                 return <li key={i}>{product.title}</li>
               })

@@ -2,7 +2,7 @@ import { combineReducers } from 'redux';
 
 export function chuckNorrisQuote(state=[], action) {
   switch(action.type) {
-    case 'QUOTE_FETCH_SUCCESS':
+    case 'CHUCK_FETCH_SUCCESS':
       return action.quote.replace(/&quot;/g,'"');
     default:
       return state;

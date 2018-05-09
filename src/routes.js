@@ -1,19 +1,19 @@
-import { SomeComponentConnected } from "./components/some-component"
-import { SomeOtherComponentConnected } from "./components/some-other-component"
+import { ChuckConnected } from "./components/chuck"
+import { XKCDConnected } from "./components/xkcd"
 import { NewsConnected } from "./components/news";
 import { PWConnected } from "./components/pw";
-import { getChuckNorrisQuote, getLatestXKCDComic, getNews, getPW } from "./actions"
+import { getChuck, getXKCD, getNews, getPW } from "./state/actions"
 
 export const routes = [
   {
-    path: "/some-path",
-    component: SomeComponentConnected,
-    loadData: () => getChuckNorrisQuote()
+    path: "/chuck",
+    component: ChuckConnected,
+    loadData: () => getChuck()
   },
   {
-    path: "/some-other-path",
-    component: SomeOtherComponentConnected,
-    loadData: () => getLatestXKCDComic()
+    path: "/xkcd",
+    component: XKCDConnected,
+    loadData: () => getXKCD()
   },
   {
     path: "/news",
