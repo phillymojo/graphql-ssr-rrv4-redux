@@ -21,13 +21,15 @@ class PW extends React.Component {
                   })
                 }
               </ul>
-              <ul className="products">
-                {
-                  this.props.pw.products.map((product, i) => {
-                    return <li key={i}>{product.title}</li>
-                  })
-                }
-              </ul>
+              <div className="products">
+                <div className="grid">
+                  {
+                    this.props.pw.products.map((product, i) => {
+                      return <div className="item" key={i}><img src={product.imgurl} width="160px" />{product.title}</div>
+                    })
+                  }
+                </div>
+              </div>
             </div>
           </div>
         }

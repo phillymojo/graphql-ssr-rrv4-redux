@@ -95,7 +95,8 @@ export function getPW() {
           }
           products {
             id,
-            title
+            title,
+            imgurl
           }
           navlinks {
             id,

@@ -12,3 +12,36 @@ body {
 .header a {
   padding-right: 3px;
 }
+
+.pw .content {
+  margin: 5px;
+}
+.pw .navlinks, .pw .products {
+  display: inline-block;
+  vertical-align: top;
+}
+.pw .navlinks {
+  list-style-type: none;
+  width: 200px;
+  padding: 0;
+  margin: 0;
+}
+.pw .navlinks li {
+  padding: 2px;
+  border: 1px solid lightgray;
+  margin-bottom: 3px;
+}
+.pw .products {
+  display: inline-block;
+  margin: 0 0 0 5px;
+}
+.pw .products .grid {
+  display: grid;
+  grid-template-columns: 160px 160px 160px 160px 160px;
+  grid-gap: 5px;
+}
+.pw .products .grid .item {
+  height: 200px;
+  background-color: lightgray;
+  font-size: 12px
+}

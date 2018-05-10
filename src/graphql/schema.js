@@ -34,7 +34,8 @@ const schema = buildSchema(`
   },
   type product {
     id: String!,
-    title: String!
+    title: String!,
+    imgurl: String
   },
   type navlink {
     id: String!,

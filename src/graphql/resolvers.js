@@ -49,7 +49,8 @@ const root = {
             const products = feeds_res.data.objects.map((product) => {
               return {
                 id: product.id,
-                title: product.publishedContent.properties.title
+                title: product.publishedContent.properties.title,
+                imgurl: product.publishedContent.properties.productCard.properties.squarishURL
               }
             });
             const newobj = Object.assign({}, ua_res, {products});
