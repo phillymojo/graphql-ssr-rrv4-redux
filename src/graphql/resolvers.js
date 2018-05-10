@@ -18,9 +18,9 @@ const root = {
       })
   },
   pw: () => {
-    // call url analyzer and feeds rollup, return both results in single call
-
-
+    /** Call the URL Analyzer - this will determine if we have a redirect, and will return immediately with a 302.
+     * Otherwise, call the other endpoints and return the entire data package.
+     */
     return axios.post("https://api.nike.com/user_navigation/url_analysis/v1", {
       "url": "http://nike.com/us/en_us/n/1j7?sl=Nike%20sweatsuit"
     })
@@ -40,10 +40,12 @@ const root = {
           }
         } else {
           //no redirect
-          /** TODO: return an object that has the necessary info to call Feeds/Facets/CMS */ 
+          /** TODO: return an object that has the necessary info to call Feeds/Facets/CMS 
+           * In this implementation, I am chaining then's to get the next calls.
+           * Really, it should be doing a Promise.all so that we can call the enpoints asynchronously. */ 
         }
       })
-      .then((ua_res) => {
+      .then((prev_res) => {
         return axios.get("https://api.nike.com/product_feed/rollup_threads/v2/?consumerChannelId=d9a5bc42-4b9c-4976-858a-f159cf99c647&filter=channelId(d9a5bc42-4b9c-4976-858a-f159cf99c647)&filter=marketplace(US)&filter=language(en)&filter=employeePrice(true)&count=60&searchTerms=red&anchor=60")
           .then((feeds_res) => {
             const products = feeds_res.data.objects.map((product) => {
@@ -53,14 +55,14 @@ const root = {
                 imgurl: product.publishedContent.properties.productCard.properties.squarishURL
               }
             });
-            const newobj = Object.assign({}, ua_res, {products});
+            const newobj = Object.assign({}, prev_res, {products});
             return newobj;
           })
           .catch((err) => {
             console.log("Error from Feeds request: ", err.data)
           })
       })
-      .then((feeds_res) => {
+      .then((prev_res) => {
         return axios.post("https://experience.prod.commerce.nikecloud.com/recommend/navigations/v1/product_feed/threads/v2",{
             "channelId":"d9a5bc42-4b9c-4976-858a-f159cf99c647",
             "language":"en",
@@ -74,7 +76,7 @@ const root = {
                 displayText: filter.displayText
               }
             });
-            const newobj = Object.assign({}, feeds_res, {navlinks});
+            const newobj = Object.assign({}, prev_res, {navlinks});
             return newobj;
           })
           .catch((err) => {
