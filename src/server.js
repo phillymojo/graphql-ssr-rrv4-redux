@@ -47,7 +47,10 @@ app.use((req, res) => {
     // Write the response back to the client
     res.send(`
     <html>
-      <body style="background:light blue" >
+      <head>
+        <link rel="stylesheet" type="text/css" href="/css/styles.css">
+      </head>
+      <body>
         <div id="app">${content}</div>
         <script>
           window.__PRELOADED_STATE__ = ${serializedState}

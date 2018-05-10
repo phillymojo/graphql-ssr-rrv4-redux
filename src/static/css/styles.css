@@ -1,0 +1,14 @@
+body {
+  margin: 0 auto;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.header {
+  font-size: 18px;
+  margin: 2px;
+  padding: 3px;
+  background-color: lightblue;
+}
+.header a {
+  padding-right: 3px;
+}

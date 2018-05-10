@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 class Header extends React.Component {
   render() {
     return (
-      <div>
+      <div className="header">
       <Link to={`/chuck`}>Chuck</Link>&nbsp;
       <Link to={`/xkcd`}>XKCD</Link>&nbsp;
       <Link to={`/news`}>News</Link>&nbsp;
