@@ -1,6 +1,4 @@
-import { buildSchema } from 'graphql';
-
-const schema = buildSchema(`
+const schema = `
   type Query {
     xkcd: XKCD!,
     news: [newsItem!]!,
@@ -41,6 +39,6 @@ const schema = buildSchema(`
     id: String!,
     displayText: String,
   }
-`);
+`;
 
 export default schema;
