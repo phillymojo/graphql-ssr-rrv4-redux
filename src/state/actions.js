@@ -106,7 +106,14 @@ export function getPW() {
       }
       `
     }).then((response) => {
-      dispatch(getPWSuccess(response.data));
+      if(response.data.redirect) {
+        //redirect detected
+        console.log(`Redirect detected... `)
+        //[TODO] how to do a redirect on the server? on client we can just do a window.location, but how do we tell if we are on the client/server at this point?
+      } else {
+        //no redirect; load PW
+        dispatch(getPWSuccess(response.data));
+      }
       dispatch(setIsLoading(false))
     })
     .catch((err) => {

@@ -12,7 +12,7 @@ class PW extends React.Component {
         <br />
         {(this.props.isLoading) ? <div className="isLoading">Loading...</div> :
           <div>
-            <div className="redirect">The request for {analyzer.url} should redirect to {analyzer.redirectUrl}</div>
+            {/* <div className="redirect">The request for {analyzer.url} should redirect to {analyzer.redirectUrl}</div> */}
             <div className="content">
               <ul className="navlinks">
                 {

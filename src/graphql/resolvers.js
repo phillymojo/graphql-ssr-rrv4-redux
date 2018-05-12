@@ -18,19 +18,21 @@ const root = {
       })
   },
   pw: () => {
-    /** Call the URL Analyzer - this will determine if we have a redirect, and will return immediately with a 302.
+    /** Call the URL Analyzer - this will determine if we have a redirect, and will return immediately.
      * Otherwise, call the other endpoints and return the entire data package.
      */
+
+    // const requested_url = "http://nike.com/us/en_us/n/1j7?sl=Nike%20sweatsuit";
+    const requested_url = "http://nike.com/us/en_us/n/1j7?sl=red%20shoes";
+
     return axios.post("https://api.nike.com/user_navigation/url_analysis/v1", {
-      "url": "http://nike.com/us/en_us/n/1j7?sl=Nike%20sweatsuit"
+      "url": requested_url,
     })
       .then((res) => {
         if (res.data.action && res.data.action.redirectUrl) {
-          //a redirect was detected
-          //this would return a 302 and bypass the additional calls to Feeds/Facets/CMS.
-          //but in this POC, I want to return everything regardless of redirect or not
+          //a redirect was detected; return immediately with the info for the redirect
           return {
-            analyzer: {
+            redirect: {
               url: res.data.source.url,
               redirectUrl: res.data.action.redirectUrl,
               pageType: res.data.source.analysis.pageType,
@@ -39,53 +41,98 @@ const root = {
             }
           }
         } else {
-          //no redirect
-          /** TODO: return an object that has the necessary info to call Feeds/Facets/CMS 
-           * In this implementation, I am chaining then's to get the next calls.
-           * Really, it should be doing a Promise.all so that we can call the enpoints asynchronously. */ 
+          //no redirect; call the Feeds/Facets/CMS endpoints with data returned from the URLAnalyzer request -> [TODO]
+          let promises = [
+            /** FEEDS_ROLLUP */
+            axios.get("https://api.nike.com/product_feed/rollup_threads/v2/?consumerChannelId=d9a5bc42-4b9c-4976-858a-f159cf99c647&filter=channelId(d9a5bc42-4b9c-4976-858a-f159cf99c647)&filter=marketplace(US)&filter=language(en)&filter=employeePrice(true)&count=60&searchTerms=red&anchor=60")
+              .then((feeds_res) => {
+                const products = feeds_res.data.objects.map((product) => {
+                  return {
+                    id: product.id,
+                    title: product.publishedContent.properties.title,
+                    imgurl: product.publishedContent.properties.productCard.properties.squarishURL
+                  }
+                });
+                return { products };
+              })
+              .catch((err) => {
+                console.log("Error from Feeds request: ", err.data)
+              }),
+              /** FACET_NAV */
+              axios.post("https://experience.prod.commerce.nikecloud.com/recommend/navigations/v1/product_feed/threads/v2", {
+                "channelId": "d9a5bc42-4b9c-4976-858a-f159cf99c647",
+                "language": "en",
+                "marketplace": "US",
+                "attributeIds": []
+              })
+                .then((facet_res) => {
+                  const navlinks = facet_res.data.filters.map((filter) => {
+                    return {
+                      id: filter.attributeId,
+                      displayText: filter.displayText
+                    }
+                  });
+                  return { navlinks };
+                })
+                .catch((err) => {
+                  console.log('Error from Facet Nav request: ', err.data)
+                }) 
+          ]
+
+          return Promise.all(promises)
+            .then((values) => {
+              // convert the array to an object of the data returned from all the promises
+              const obj = values.reduce((acc, cv) => {
+                return Object.assign({}, acc, cv);
+              }, {})
+              return obj;
+            })
+            .catch((err) => {console.log("Promise all error: ", err.data)})
+
         }
       })
-      .then((prev_res) => {
-        return axios.get("https://api.nike.com/product_feed/rollup_threads/v2/?consumerChannelId=d9a5bc42-4b9c-4976-858a-f159cf99c647&filter=channelId(d9a5bc42-4b9c-4976-858a-f159cf99c647)&filter=marketplace(US)&filter=language(en)&filter=employeePrice(true)&count=60&searchTerms=red&anchor=60")
-          .then((feeds_res) => {
-            const products = feeds_res.data.objects.map((product) => {
-              return {
-                id: product.id,
-                title: product.publishedContent.properties.title,
-                imgurl: product.publishedContent.properties.productCard.properties.squarishURL
-              }
-            });
-            const newobj = Object.assign({}, prev_res, {products});
-            return newobj;
-          })
-          .catch((err) => {
-            console.log("Error from Feeds request: ", err.data)
-          })
-      })
-      .then((prev_res) => {
-        return axios.post("https://experience.prod.commerce.nikecloud.com/recommend/navigations/v1/product_feed/threads/v2",{
-            "channelId":"d9a5bc42-4b9c-4976-858a-f159cf99c647",
-            "language":"en",
-            "marketplace":"US",
-            "attributeIds":[]
-        })
-          .then((facet_res) => {
-            const navlinks = facet_res.data.filters.map((filter) => {
-              return {
-                id: filter.attributeId,
-                displayText: filter.displayText
-              }
-            });
-            const newobj = Object.assign({}, prev_res, {navlinks});
-            return newobj;
-          })
-          .catch((err) => {
-            console.log('Error from Facet Nav request: ', err.data)
-          })
-      })
-      .catch((err) => {
-        console.log("Error from URLAnalyzer request: ", err.data)
-      })
+      .catch((err) => {console.log(`Error from URLAnalyzer: ${err.data}`)});
+      // .then((prev_res) => {
+      //   return axios.get("https://api.nike.com/product_feed/rollup_threads/v2/?consumerChannelId=d9a5bc42-4b9c-4976-858a-f159cf99c647&filter=channelId(d9a5bc42-4b9c-4976-858a-f159cf99c647)&filter=marketplace(US)&filter=language(en)&filter=employeePrice(true)&count=60&searchTerms=red&anchor=60")
+      //     .then((feeds_res) => {
+      //       const products = feeds_res.data.objects.map((product) => {
+      //         return {
+      //           id: product.id,
+      //           title: product.publishedContent.properties.title,
+      //           imgurl: product.publishedContent.properties.productCard.properties.squarishURL
+      //         }
+      //       });
+      //       const newobj = Object.assign({}, prev_res, { products });
+      //       return newobj;
+      //     })
+      //     .catch((err) => {
+      //       console.log("Error from Feeds request: ", err.data)
+      //     })
+      // })
+      // .then((prev_res) => {
+      //   return axios.post("https://experience.prod.commerce.nikecloud.com/recommend/navigations/v1/product_feed/threads/v2", {
+      //     "channelId": "d9a5bc42-4b9c-4976-858a-f159cf99c647",
+      //     "language": "en",
+      //     "marketplace": "US",
+      //     "attributeIds": []
+      //   })
+      //     .then((facet_res) => {
+      //       const navlinks = facet_res.data.filters.map((filter) => {
+      //         return {
+      //           id: filter.attributeId,
+      //           displayText: filter.displayText
+      //         }
+      //       });
+      //       const newobj = Object.assign({}, prev_res, { navlinks });
+      //       return newobj;
+      //     })
+      //     .catch((err) => {
+      //       console.log('Error from Facet Nav request: ', err.data)
+      //     })
+      // })
+      // .catch((err) => {
+      //   console.log("Error from URLAnalyzer request: ", err.data)
+      // })
   }
 };
 

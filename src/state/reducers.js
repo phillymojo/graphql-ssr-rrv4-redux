@@ -36,7 +36,7 @@ export function newsItems(state={ data: { news: [] } }, action) {
   }
 }
 
-export function PW(state={ data: { pw: { source: {}, action: {}} } }, action) {
+export function PW(state={ data: { pw: { products: [], navlinks: [] } } }, action) {
   switch(action.type) {
     case 'PW_FETCH_SUCCESS':
       return action.data;
