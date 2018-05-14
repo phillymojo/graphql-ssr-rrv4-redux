@@ -2,7 +2,8 @@ import { ChuckConnected } from "./components/chuck"
 import { XKCDConnected } from "./components/xkcd"
 import { NewsConnected } from "./components/news";
 import { PWConnected } from "./components/pw";
-import { getChuck, getXKCD, getNews, getPW } from "./state/actions"
+import { BitcoinConnected } from "./components/bitcoin";
+import { getChuck, getXKCD, getNews, getPW, getBitcoin } from "./state/actions"
 
 export const routes = [
   {
@@ -24,5 +25,10 @@ export const routes = [
     path: "/pw",
     component: PWConnected,
     loadData: () => getPW()
+  },
+  {
+    path: "/bitcoin",
+    component: BitcoinConnected,
+    loadData: () => getBitcoin()
   }
 ]

@@ -2,7 +2,9 @@ const schema = `
   type Query {
     xkcd: XKCD!,
     news: [newsItem!]!,
-    pw: PW
+    pw: PW,
+    bitcoin: Bitcoin,
+    dad: DadJoke,
   }
   type XKCD {
     img: String!,
@@ -38,6 +40,16 @@ const schema = `
   type navlink {
     id: String!,
     displayText: String,
+  },
+  type Bitcoin {
+    updated: String,
+    usdPrice: String,
+    gbpPrice: String,
+    eurPrice: String,
+  },
+  type DadJoke {
+    joke: String!,
+    id: String
   }
 `;
 

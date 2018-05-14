@@ -45,10 +45,20 @@ export function PW(state={ data: { pw: { products: [], navlinks: [] } } }, actio
   }
 }
 
+export function bitcoin(state={ }, action) {
+  switch(action.type) {
+    case 'BITCOIN_FETCH_SUCCESS':
+      return action.data;
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   chuckNorrisQuote,
   isLoading,
   XKCD,
   newsItems,
-  PW
+  PW,
+  bitcoin
 });

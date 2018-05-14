@@ -93,6 +93,22 @@ const resolvers = {
           }
         })
         .catch((err) => { console.log(`Error from URLAnalyzer: ${err.data}`) });
+    },
+    bitcoin: () => {
+      return axios.get('https://api.coindesk.com/v1/bpi/currentprice.json')
+        .then((res) => {
+          return { updated: res.data.time.updated, usdPrice: res.data.bpi.USD.rate, gbpPrice: res.data.bpi.GBP.rate, eurPrice: res.data.bpi.EUR.rate }
+        })
+    },
+    dad: () => {
+      return axios.get('https://icanhazdadjoke.com/', {
+        headers: {
+          Accept: 'application/json'
+        }
+      })
+        .then((res) => {
+          return { joke: res.data.joke, id: res.data.id }
+        })
     }
   }
 };

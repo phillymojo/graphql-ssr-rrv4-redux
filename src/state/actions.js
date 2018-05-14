@@ -40,6 +40,13 @@ export function getPWSuccess(data) {
   }
 }
 
+export function getBitcoinSuccess(data) {
+  return {
+    type: 'BITCOIN_FETCH_SUCCESS',
+    data
+  }
+}
+
 
 /** Get actions */
 export function getChuck() {
@@ -118,6 +125,26 @@ export function getPW() {
     })
     .catch((err) => {
       console.log(err.response.data)
+    })
+  }
+}
+
+export function getBitcoin() {
+  return dispatch => {
+    dispatch(setIsLoading(true));
+    return axios.post(queryUrl, {
+      query: `{ 
+                bitcoin { 
+                  updated, 
+                  usdPrice, 
+                  gbpPrice, 
+                  eurPrice
+                } 
+              }`
+    })
+    .then((response) => {
+      dispatch(getBitcoinSuccess(response.data));
+      dispatch(setIsLoading(false));      
     })
   }
 }

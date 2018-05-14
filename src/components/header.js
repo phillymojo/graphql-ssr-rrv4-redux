@@ -9,7 +9,8 @@ class Header extends React.Component {
       <Link to={`/chuck`}>Chuck</Link>&nbsp;
       <Link to={`/xkcd`}>XKCD</Link>&nbsp;
       <Link to={`/news`}>News</Link>&nbsp;
-      <Link to={`/pw`}>PW</Link>
+      <Link to={`/pw`}>PW</Link>&nbsp;
+      <Link to={`/bitcoin`}>Bitcoin</Link>
       </div>
     )
   }
