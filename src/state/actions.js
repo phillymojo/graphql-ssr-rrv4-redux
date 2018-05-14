@@ -47,6 +47,13 @@ export function getBitcoinSuccess(data) {
   }
 }
 
+export function getDadSuccess(data) {
+  return {
+    type: 'DAD_FETCH_SUCCESS',
+    data
+  }
+}
+
 
 /** Get actions */
 export function getChuck() {
@@ -146,5 +153,23 @@ export function getBitcoin() {
       dispatch(getBitcoinSuccess(response.data));
       dispatch(setIsLoading(false));      
     })
+  }
+}
+
+export function getDad() {
+  return dispatch => {
+    dispatch(setIsLoading(true));
+    return axios.post(queryUrl, {
+      query: `{
+        dad {
+          joke,
+          id
+        }
+      }`
+    })
+      .then((response) => {
+        dispatch(getDadSuccess(response.data));
+        dispatch(setIsLoading(false));
+      })
   }
 }

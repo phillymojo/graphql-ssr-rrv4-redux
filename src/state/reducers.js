@@ -54,11 +54,21 @@ export function bitcoin(state={ data: { bitcoin : {} } }, action) {
   }
 }
 
+export function dad(state={ data: { dad: {} } }, action) {
+  switch(action.type) {
+    case 'DAD_FETCH_SUCCESS':
+      return action.data;
+    default:
+      return state;
+  }
+}
+
 export default combineReducers({
   chuckNorrisQuote,
   isLoading,
   XKCD,
   newsItems,
   PW,
-  bitcoin
+  bitcoin,
+  dad
 });
