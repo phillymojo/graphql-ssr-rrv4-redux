@@ -45,7 +45,7 @@ export function PW(state={ data: { pw: { products: [], navlinks: [] } } }, actio
   }
 }
 
-export function bitcoin(state={ }, action) {
+export function bitcoin(state={ data: { bitcoin : {} } }, action) {
   switch(action.type) {
     case 'BITCOIN_FETCH_SUCCESS':
       return action.data;
