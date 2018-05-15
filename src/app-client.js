@@ -10,7 +10,7 @@ import { RouteDataLoader } from './route-data-loader';
 const store = configureStore(window.__PRELOADED_STATE__)
 
 window.onload = () => {
-  ReactDOM.hydrate( // render or hydrate? hydrate was throwing a warning about matching <div> or something...
+  ReactDOM.hydrate(
     <Provider store={store}>
       <BrowserRouter>
         <RouteDataLoader routes={routes} dispatch={store.dispatch}>

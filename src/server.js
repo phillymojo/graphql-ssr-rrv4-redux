@@ -30,6 +30,11 @@ app.use((req, res) => {
   const context = {};
   const { url } = req;
 
+  /** when loading from the server, we need to be sure that we have all the data 
+   * that is needed to render all the routes that match, BEFORE we send the response
+   * down to the client. Creating promises that fire the loadData functions of the routes
+   * ensures that we do indeed have all this data fully loaded before render.
+   */
   const promises = matchRoutes(routes, url).map(({ route, match }) => {
     if (route.loadData) return store.dispatch(route.loadData(match));
   });
