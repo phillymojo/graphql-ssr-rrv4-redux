@@ -1,43 +1,28 @@
 import path from 'path';
 import express from "express"
 import React from 'react';
-// import http from "http"
-import bodyParser from 'body-parser';
-import { graphqlExpress, graphiqlExpress } from 'apollo-server-express';
-import { ApolloEngine } from 'apollo-engine';
-import { makeExecutableSchema } from 'graphql-tools';
+import http from "http"
+import graphqlHTTP from 'express-graphql';
+import { buildSchema } from 'graphql';
 import ReactDOMServer from "react-dom/server"
 import axios from 'axios';
 import { Provider } from 'react-redux'
 import { StaticRouter } from "react-router"
 import { renderRoutes, matchRoutes } from 'react-router-config';
 import configureStore from './state/configureStore';
-import typeDefs from './graphql/schema';
+import schema from './graphql/schema';
 import resolvers from './graphql/resolvers';
 import { routes } from './routes';
 
-const app = express();
-// const server = http.createServer(app);
-
-const engine = new ApolloEngine({
-  apiKey: 'service:phillymojo-336:LW38pzFoba4bZWtlwki9DQ'
-});
+const app = express()
+const server = http.createServer(app)
 
 app.use(express.static(path.join(__dirname, 'static')));
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers
-});
-
-app.use('/graphql', bodyParser.json(), graphqlExpress({
-  schema,
-  tracing: true,
-  cacheControl: true
-}));
-
-app.use('/graphiql', graphiqlExpress({ 
-  endpointURL: '/graphql'
+app.use('/graphql', graphqlHTTP({
+  schema: buildSchema(schema),
+  rootValue: resolvers,
+  graphiql: true
 }));
 
 app.use((req, res) => {
@@ -79,11 +64,4 @@ app.use((req, res) => {
 
 })
 
-engine.listen({
-  port: 3003,
-  expressApp: app,
-},
-console.log(`
-server listening at http://localhost:3003
-
-`));
+server.listen(3003);

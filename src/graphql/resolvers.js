@@ -1,7 +1,6 @@
 import axios from 'axios';
 
 const resolvers = {
-  Query: {
     xkcd: () => {
       const num = Math.floor(Math.random() * 1988) + 1;
       return axios.get(`https://xkcd.com/${num}/info.0.json`)
@@ -110,7 +109,6 @@ const resolvers = {
           return { joke: res.data.joke, id: res.data.id }
         })
     }
-  }
 };
 
 export default resolvers;
